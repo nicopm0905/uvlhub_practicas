@@ -10,7 +10,7 @@ on:
 
 jobs:
   codacy:
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
     services:
       mariadb:
         image: mariadb:12.0.2

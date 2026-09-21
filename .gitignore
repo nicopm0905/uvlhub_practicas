@@ -53,3 +53,6 @@ ubuntu-bionic-18.04-cloudimg-console.log
 # ==========================
 # Custom ignores
 # ==========================
+.secrets
+
+actions-runner/

@@ -1,22 +1,35 @@
 name: Deploy to Render
 
 on:
-    push:
-      branches:
-        - main
-    pull_request:
-      branches:
-        - main
+  push:
+    tags:
+      - 'v*'
 
 jobs:
 
-  deploy:
-    name: Deploy to Render
+  check-main:
+    name: Check tag is on main
     runs-on: ubuntu-24.04
     steps:
       - name: Check out the repo
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
+      - name: Verify tagged commit was merged into main
+        run: git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+
+  tests:
+    name: Run tests
+    needs: check-main
+    uses: ./.github/workflows/codacy.yml
+    secrets: inherit
+
+  deploy:
+    name: Deploy to Render
+    needs: tests
+    runs-on: ubuntu-24.04
+    steps:
       - name: Deploy to Render
         env:
           deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}

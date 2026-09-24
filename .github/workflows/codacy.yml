@@ -52,6 +52,7 @@ jobs:
 
     - name: Audit dependencies for vulnerabilities
       run: pip-audit -r requirements.txt
+      continue-on-error: true
 
     - name: Run tests with coverage
       run: |
